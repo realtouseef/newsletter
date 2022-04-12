@@ -1,6 +1,7 @@
 {
   "name": "newsletter",
-  "version": "0.1.0",
+  "description": "A simple newsletter made with NextJS and TailwindCSS alongside Firebase on the backend to store the emails.",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,12 +10,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "firebase": "^9.6.10",
     "next": "12.1.4",
     "prettier-plugin-tailwindcss": "^0.1.8",
     "react": "18.0.0",
     "react-dom": "18.0.0"
   },
   "devDependencies": {
+    "@svgr/webpack": "^6.2.1",
     "autoprefixer": "^10.4.4",
     "eslint": "8.13.0",
     "eslint-config-next": "12.1.4",
