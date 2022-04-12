@@ -4,4 +4,4 @@ A simple newsletter made with NextJS and TailwindCSS alongside Firebase on the b
 
 ## Make it yours
 
-You can use this by creating a project on (Firebase)[https://firebase.google.com]
+You can use this by creating a project on [Firebase](https://firebase.google.com)
