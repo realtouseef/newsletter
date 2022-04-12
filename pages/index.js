@@ -21,7 +21,7 @@ export default function Home() {
     setTimeout(() => {
       setSuccessMessage(false);
       setSendEmail("");
-    }, 7000);
+    }, 3000);
   }
 
   return (
