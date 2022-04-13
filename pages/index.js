@@ -1,26 +1,70 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import Head from "next/head";
 import Paper from "/public/paper-plane.svg";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../config/firebase";
 
+const initialState = {
+  sendEmail: "",
+  successMessage: false,
+  subscribing: false,
+};
+
+function handleEmails(state, action) {
+  switch (action.type) {
+    case "field": {
+      return {
+        ...state,
+        [action.field]: action.value,
+        sendEmail: action.value,
+      };
+    }
+
+    case "successMessage": {
+      return {
+        ...state,
+        successMessage: true,
+      };
+    }
+    case "subscribing": {
+      return {
+        ...state,
+        subscribing: true,
+      };
+    }
+    case "setDefault": {
+      return {
+        ...state,
+        sendEmail: "",
+        subscribing: false,
+        successMessage: false,
+      };
+    }
+    default:
+      throw new Error();
+  }
+}
+
 export default function Home() {
-  const [sendEmail, setSendEmail] = useState("");
-  const [successMessage, setSuccessMessage] = useState(false);
-  const [subscribing, setSubscribing] = useState(false);
+  const [state, dispatch] = useReducer(handleEmails, initialState);
+  const { sendEmail, successMessage, subscribing } = state;
   const emailRef = collection(db, "emails");
+  // second parameter in collection() comes from the firebase database where I have made the document called "emails"
+  console.log(sendEmail);
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    setSubscribing(true);
+    dispatch({ type: "subscribing" });
+
     await addDoc(emailRef, { email: sendEmail });
-    setSuccessMessage(true);
-    setSubscribing(false);
+
+    dispatch({ type: "successMessage" });
+
+    // dispatch({ type: ACTION.SEND_EMAILS });
 
     setTimeout(() => {
-      setSuccessMessage(false);
-      setSendEmail("");
+      dispatch({ type: "setDefault" });
     }, 3000);
   }
 
@@ -40,9 +84,14 @@ export default function Home() {
       >
         <center className="flex items-center justify-center">
           <input
-            onChange={(e) => setSendEmail(e.currentTarget.value)}
+            onChange={(e) =>
+              dispatch({
+                type: "field",
+                value: e.target.value,
+                field: "email",
+              })
+            }
             type="email"
-            value={sendEmail}
             placeholder="joe@joe.com"
             className="w-44 px-4 py-2 rounded-l-md focus:outline-none"
             required
